@@ -1,0 +1,23 @@
+{
+  "name": "finance-app",
+  "version": "1.0.0",
+  "description": "Project to store personal expense/income finance app. Project Goal is to provide API with javascript and build Iphone app to connect to API.",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "express-handlebars": "^3.0.0",
+    "hbs": "~4.0.1",
+    "mongoose": "^4.10.8",
+    "morgan": "~1.9.0",
+    "nodemailer": "^4.4.1",
+    "nodemon": "^1.14.1",
+    "serve-favicon": "~2.4.5"
+  }
+}
