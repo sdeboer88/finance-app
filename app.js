@@ -1,4 +1,5 @@
 var express = require('express');
+var expressHbs = require('express-handlebars');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -6,13 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-
 var redis = require('redis'); // import redis
 var session = require('express-session'); // import express session
 var redisStore = require('connect-redis')(session); // import redis storage
 var client = redis.createClient();
 
-// var MongoStore = require('connect-mongo')(session);
 var bcrypt = require('bcryptjs');
 
 var index = require('./routes/index');
@@ -23,16 +22,15 @@ var app = express();
 //connect to MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/finance-app');
 var db = mongoose.connection;
-
-//handle mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  // we're connected!
-});
+db.once('open', function () { });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'hbs');
+
+app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
+app.set('view engine', '.hbs');
 
 app.use(session({
   secret: 'ssshhhhh',
@@ -42,9 +40,6 @@ app.use(session({
   resave: false
 }));
 
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

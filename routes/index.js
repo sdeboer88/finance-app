@@ -4,9 +4,8 @@ var User = require('../models/user');
 var Auth = require('../middleware/requireLogin');
 
 /* GET home page. */
-router.get('/', Auth.requireLogin,function(req, res, next) {
-    console.log(req.session.key);
-    // if email key is sent redirect.
+router.get('/',function(req, res, next) {
+    console.log(req.session.userId);
     res.render('index', { title: 'Finance App' });
 });
 
@@ -37,17 +36,6 @@ router.post("/sign-in/process", function(req, res, next) {
     return next(err);
   }
 });
-
-
-
-router.get('/test', Auth.requireLogin,function(req, res) {
-  console.log('ID in POST: ', req.session.userId);
-  res.send('good');
-});
-
-
-
-
 
 ///////////////
 // REGISTRATION
