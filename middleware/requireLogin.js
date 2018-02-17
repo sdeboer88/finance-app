@@ -4,6 +4,7 @@ module.exports = {
         if (!req.session.userId) {
             res.redirect('/sign-in');
         } else {
+            signedIn : true;
             next();
         }
     }

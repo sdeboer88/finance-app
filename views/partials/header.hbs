@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Project name</a>
+            <a class="navbar-brand" href="/">Finance App</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -16,7 +16,14 @@
                 <li class="{{#if active.urlAbout}}active{{/if}}"><a href="/about">About</a></li>
                 <li class="{{#if active.urlUsers}}active{{/if}}"><a href="/users/welcome">Users</a></li>
             </ul>
-
+            <ul class="nav navbar-nav navbar-right">
+                {{#if isAuthenticated}}
+                    <li><a href="/logout">Logout</a></li>
+                {{else}}
+                    <li><a href="/sign-in">Sign In</a></li>
+                    <li class="active"><a href="./">Register <span class="sr-only">(current)</span></a></li>
+                {{/if}}
+            </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
 </nav>

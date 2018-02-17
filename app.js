@@ -12,6 +12,8 @@ var redisStore = require('connect-redis')(session); // import redis storage
 var client = redis.createClient();
 var bcrypt = require('bcryptjs');
 
+const minifyHTML = require('express-minify-html');
+const compression = require('compression');
 
 
 // Routes
@@ -39,10 +41,30 @@ app.set('view engine', '.hbs');
 app.use(session({
   secret: 'ssshhhhh',
   // create new redis store.
-  store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl :  260}),
+  store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 3600000}),
   saveUninitialized: false,
   resave: false
 }));
+
+app.use(minifyHTML({
+  override: true,
+  exception_url: false,
+  htmlMinifier: {
+    removeComments: false,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: false,
+    removeAttributeQuotes: false,
+    removeEmptyAttributes: false,
+    minifyJS: false
+  }
+}));
+
+app.use(function(req,res,next){
+  res.locals.isAuthenticated = req.session.userId;
+  next();
+})
+
+app.use(compression());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

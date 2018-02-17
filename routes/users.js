@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Auth = require('../middleware/requireLogin');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -8,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 // GET route after registering
-router.get('/welcome', function (req, res, next) {
+router.get('/welcome',Auth.requireLogin, function (req, res, next) {
     console.log(req.session.userId);
   User.findById(req.session.userId)
       .exec(function (error, user) {
@@ -31,6 +32,22 @@ router.get('/welcome', function (req, res, next) {
           }
         }
       });
+});
+
+// Remove record from mongodb
+router.get('/delete/:id',Auth.requireLogin, function(req, res, next) {
+    User.findByIdAndRemove({_id: req.params.id},
+        function(err, docs){
+            if(err) res.json(err);
+            else{
+                if(req.params.id == req.session.userId){
+                    req.session.destroy();
+                    res.redirect('/');
+                }else{
+                    res.redirect('/users/welcome');
+                }
+            }
+        });
 });
 
 module.exports = router;

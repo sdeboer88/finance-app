@@ -1,11 +1,10 @@
 <h1>{{title}}</h1>
-<p><a href="/logout">Logout</a></p>
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Website</th>
+        <th>Email</th>
+        <th>Username</th>
+        <th>Password</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -16,8 +15,8 @@
             <td>{{this.username}}</td>
             <td>{{this.password}}</td>
             <td>
-                <a href="/tickets/{{this._id}}" class="btn btn-success">View</a>
-                <a href="/tickets/delete/{{this._id}}" class="btn btn-danger">Delete</a>
+                <a href="/users/{{this._id}}" class="btn btn-success">View</a>
+                <a href="/users/delete/{{this._id}}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     {{/each}}
