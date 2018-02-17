@@ -6,16 +6,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
 var redis = require('redis'); // import redis
 var session = require('express-session'); // import express session
 var redisStore = require('connect-redis')(session); // import redis storage
 var client = redis.createClient();
-
 var bcrypt = require('bcryptjs');
 
+
+
+// Routes
 var index = require('./routes/index');
 var users = require('./routes/users');
+var authentication = require('./routes/authentication');
+
+var api = require('./routes/api');
 
 var app = express();
 
@@ -48,8 +52,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-
-
+app.use('/sign-in', authentication);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -68,7 +72,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;
