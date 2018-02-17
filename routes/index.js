@@ -9,33 +9,11 @@ router.get('/',function(req, res, next) {
     res.render('index', { title: 'Finance App' });
 });
 
-//////////////
-//    SIGN IN
-//////////////
-
-/* GET signin page. */
-router.get('/sign-in', function(req, res, next) {
-  res.render('signin', { title: 'Sign In' });
+router.get('/about',function(req, res, next) {
+  console.log(req.session.userId);
+  res.render('about', { title: 'About' });
 });
 
-router.post("/sign-in/process", function(req, res, next) {
-  if (req.body.logemail && req.body.logpassword) {
-    User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
-      if (error || !user) {
-        var err = new Error('Wrong email or password.');
-        err.status = 401;
-        return next(err);
-      } else {
-        req.session.userId=user._id;
-        return res.redirect('/users/welcome');
-      }
-    });
-  } else {
-    var err = new Error('All fields required.');
-    err.status = 400;
-    return next(err);
-  }
-});
 
 ///////////////
 // REGISTRATION
@@ -58,20 +36,20 @@ router.post("/register/submit", function(req, res, next) {
       req.body.password &&
       req.body.passwordConf) {
 
-      var userData = {
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        passwordConf: req.body.passwordConf,
-      }
+    var userData = {
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+      passwordConf: req.body.passwordConf,
+    }
 
-      User.create(userData, function (err, user) {
-        if (err) {
-          return next(err)
-        } else {
-          return res.redirect('/users/welcome');
-        }
-      });
+    User.create(userData, function (err, user) {
+      if (err) {
+        return next(err)
+      } else {
+        return res.redirect('/users/welcome');
+      }
+    });
   }
 });
 
@@ -81,7 +59,7 @@ router.post("/register/submit", function(req, res, next) {
 
 router.get('/logout', function(req, res, next) {
   console.log("logging out......");
-  console.log(req.session.key);
+  console.log(req.session.userId);
 
   req.session.destroy(function(err){
     if(err){
@@ -92,6 +70,5 @@ router.get('/logout', function(req, res, next) {
   });
 
 });
-
 
 module.exports = router;
